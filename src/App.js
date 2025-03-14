@@ -5,6 +5,7 @@ import './App.css';
 function App() {
 
   let timeInterval
+  let milliseconds = 0
 
   const [timeDisplay, setTimeDisplay] = useState('00:00')
   
@@ -27,7 +28,7 @@ function App() {
     // we will work with milliseconds
     // convert minutes to milliseconds
     // convert seconds to milliseconds
-    let milliseconds = (minInput * (1000 * 60)) + (secondsInput * (1000))
+    milliseconds = (minInput * (1000 * 60)) + (secondsInput * (1000))
 
     let formattedTime = formatTime(milliseconds)
     setTimeDisplay(formattedTime)
@@ -55,6 +56,37 @@ function App() {
     
 
     console.log(`Setting Timer`)
+  }
+
+  const pauseTimer = () => {
+    clearInterval(timeInterval)
+  }
+
+  const resumeTimer = () => {
+
+    let formattedTime = formatTime(milliseconds)
+    setTimeDisplay(formattedTime)
+
+    timeInterval = setInterval(() => {
+      
+      // ==== CALCULATE ====
+      // timer is running every 1000ms (1s)
+      // so we are subtracting 1000ms every time
+      milliseconds = milliseconds - 1000
+
+      // ==== FORMAT ====
+      formattedTime = formatTime(milliseconds)
+
+      // ==== SET DISPLAY ====
+      setTimeDisplay(formattedTime)
+
+      if (milliseconds <= 0) {
+        clearInterval(timeInterval)
+        setTimeDisplay('00:00')
+
+        return
+      }
+    }, 1000); 
   }
 
   const formatTime = (milliseconds) => {
@@ -87,6 +119,8 @@ function App() {
         <p>seconds</p>
         <input type="text" value={secondsInput} onChange={onChangeSecondsInput} />
         <button onClick={setTimer}>Set timer</button>
+        <button onClick={pauseTimer}>Pause timer</button>
+        <button onClick={resumeTimer}>Resume timer</button>
       </div>
     </div>
   );
