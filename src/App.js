@@ -2,10 +2,10 @@ import { useState } from 'react';
 
 import './App.css';
 
-function App() {
+let timeInterval
+let milliseconds = 0
 
-  let timeInterval
-  let milliseconds = 0
+function App() {
 
   const [timeDisplay, setTimeDisplay] = useState('00:00')
   
