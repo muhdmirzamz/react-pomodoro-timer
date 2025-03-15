@@ -22,28 +22,35 @@ function App() {
     setSecondsInput(event.target.value.replace(/\D/g, ''))
   }
 
+  const processTime = () => {
+    // ==== CALCULATE ====
+    // timer is running every 1000ms (1s)
+    // so we are subtracting 1000ms every time
+    milliseconds = milliseconds - 1000
+
+    // ==== FORMAT ====
+    let formattedTime = formatTime(milliseconds)
+
+    // ==== SET DISPLAY ====
+    setTimeDisplay(formattedTime)
+  }
+
   const setTimer = () => {
 
+    // initial setup
     // ==== CALCULATE ====
     // we will work with milliseconds
-    // convert minutes to milliseconds
-    // convert seconds to milliseconds
     milliseconds = (minInput * (1000 * 60)) + (secondsInput * (1000))
 
+    // ==== CALCULATE ====
     let formattedTime = formatTime(milliseconds)
+
+    // ==== DISPLAY ====
     setTimeDisplay(formattedTime)
 
     timeInterval = setInterval(() => {
-      // ==== CALCULATE ====
-      // timer is running every 1000ms (1s)
-      // so we are subtracting 1000ms every time
-      milliseconds = milliseconds - 1000
 
-      // ==== FORMAT ====
-      formattedTime = formatTime(milliseconds)
-
-      // ==== SET DISPLAY ====
-      setTimeDisplay(formattedTime)
+      processTime()
 
       if (milliseconds <= 0) {
         clearInterval(timeInterval)
@@ -69,16 +76,7 @@ function App() {
 
     timeInterval = setInterval(() => {
       
-      // ==== CALCULATE ====
-      // timer is running every 1000ms (1s)
-      // so we are subtracting 1000ms every time
-      milliseconds = milliseconds - 1000
-
-      // ==== FORMAT ====
-      formattedTime = formatTime(milliseconds)
-
-      // ==== SET DISPLAY ====
-      setTimeDisplay(formattedTime)
+      processTime()
 
       if (milliseconds <= 0) {
         clearInterval(timeInterval)
@@ -92,18 +90,12 @@ function App() {
   const formatTime = (milliseconds) => {
     // 1s = 1000ms
     // 60s (1 min) - 1000 * 60
-    // you are dividing by 1 minute
     let minutes = Math.floor(milliseconds / (1000 * 60));
-    console.log(`minutes: ${minutes}`)
     
     // get the remaining seconds by using the % operator
     // divide the remaining seconds by 1000
-    // 1s = 1000ms
-    // floor it to get a whole number
     let seconds = Math.floor((milliseconds % (1000 * 60)) / 1000);
     console.log(`seconds: ${seconds}`)
-
-    console.log(`new string: ${minutes}:${seconds}`)
  
     // https://www.w3schools.com/jsref/jsref_string_padstart.asp
     // pads a string with '0' until your string length reaches 2
